@@ -3,6 +3,7 @@ import { AuthService } from './auth.service';
 import { RegisterDTO } from './dto/RegisterDTO.dto';
 import { LoginDTO } from './dto/LoginDTO.dto';
 import { AuthGuard } from '@nestjs/passport';
+import { User } from './entities/usuario.entity';
 
 @Controller('auth')
 export class AuthController {
@@ -19,8 +20,13 @@ export class AuthController {
   }
 
   @Get('renew')
-  renewtoken() {  
-    return this.authService.refresh();
+  @UseGuards(AuthGuard())  
+
+  renewtoken(@Request() request:any) {  
+    const user=request.user as User;
+    
+    
+    return this.authService.refresh(user);
   }
 
   @Get('test')

@@ -61,7 +61,7 @@ export class AuthService {
 
     const userResponse = user.toObject()
     delete (userResponse as any).password
-    
+
     return {
       "ok": true,
       "user": userResponse,
@@ -72,8 +72,13 @@ export class AuthService {
 
   }
 
-  refresh() {
-    return { "ok": true, "msg": "refresh token" };
+  refresh(user: User) {
+   
+    return {
+      "ok": true,
+      user,
+      token: this.getToken(user)
+    };
   }
 
   private getToken(user: User) {

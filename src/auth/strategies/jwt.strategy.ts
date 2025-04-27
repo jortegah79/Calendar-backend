@@ -29,7 +29,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
         const { email, name } = payload;
         const user = await this.userModel.findOne({ email })
         if (!user) throw new UnauthorizedException('Usuario no existe')
-        return user;
+        return user as User;
     }
 
 }
