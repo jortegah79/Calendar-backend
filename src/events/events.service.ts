@@ -47,7 +47,7 @@ export class EventsService {
 
     if (!event) throw new NotFoundException({
       "ok": false,
-      "message": "No existe un recurdo con este ID"
+      "message": "No existe un evento con este ID"
     })
     return {
       "ok": true,
@@ -76,8 +76,19 @@ export class EventsService {
 
   }
 
-  async remove(id: string) {
+  async remove(id: string,{user}) {
 
+   
+    const event = await this.findOne(id);
+  
+    const authId = user._id.toString();
+    const userEventId = event.event.user.toString();
+    if (authId !== userEventId) {
+      throw new UnauthorizedException({
+        "ok": false,
+        "message": "Usted no tiene los permisos adecuados"
+      })
+    }
     const deleted = await this.eventRepository.findByIdAndDelete({ _id: id })
     if (!deleted) {
       throw new NotFoundException({

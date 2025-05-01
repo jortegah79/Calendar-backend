@@ -37,7 +37,10 @@ export class EventsController {
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.eventsService.remove(id);
+  remove(
+    @Param('id') id: string,
+    @Request() req: any) {
+    
+    return this.eventsService.remove(id,req);
   }
 }
